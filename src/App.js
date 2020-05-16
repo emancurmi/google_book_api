@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Header from './Header/Header';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import SearchForm from './SearchForm/SearchForm';
+
+
+const API = "https://www.googleapis.com/books/v1/volumes";
+//const DEFAULT_QUERY = "q=flowers+inauthor:keyes";
+const API_KEY = "AIzaSyAIgIAeT1XBu-KOC6zFMQy1rP574-LciL8";
+
+class App extends Component {
+    
+
+    render() {        
+        return (
+            <div className="App">
+                <Header AppName="Google Books Search" />
+                <SearchForm API={API} API_KEY={API_KEY} />
+            </div>
+        );
+    }
 }
 
 export default App;
