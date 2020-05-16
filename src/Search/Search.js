@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
-
 export default class Search extends Component {
+
     constructor(props) {
         super(props);
 
         this.state = {
-            query: "",
+            tbxSearch: ""
         };
+    }
+
+    handleInputChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+        console.log(this.state.tbxSearch);
     }
 
     render() {
@@ -14,8 +21,12 @@ export default class Search extends Component {
             <div>
                 <input
                     placeholder="Search"
-                />
-                <button onClick={this.props.setQuery(this.state.query)}>Search</button>
+                    name="tbxSearch"
+                    value={this.state.someState}
+                    onChange={this.handleInputChange} />
+
+               
+                <button onClick={() => { this.props.handelSearchUpdate(this.state.tbxSearch) }}>Search</button>
             </div>
         )
     }
