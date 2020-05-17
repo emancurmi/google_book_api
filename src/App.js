@@ -7,6 +7,7 @@ class App extends Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
             isLoading: true,
             error: false,
@@ -17,6 +18,7 @@ class App extends Component {
             key: "&key=AIzaSyAIgIAeT1XBu-KOC6zFMQy1rP574-LciL8",
             books: [],
         };
+
     }
 
     fetchUsers() {
@@ -49,14 +51,16 @@ class App extends Component {
         this.setState({
             filter: "&filter=" + newfilter
         })
+        this.fetchUsers();
     }
 
     handelprinttype = (newprintype) => {
         this.setState({
             printtype: "&printType=" + newprintype
         })
+        this.fetchUsers();
     }   
-    
+
     render() {
         const book = this.state.books
             ? <Book books={this.state.books} />
