@@ -19,16 +19,14 @@ export default class Filter extends Component {
         this.setState({
             book_type : e.target.value
         });
-        console.log(this.state.book_type);
-        //this.props.handelFilter(this.state.book_type);
+        this.props.handelfilter(this.state.book_type);
     }
 
     handelPrintTypeChange = (e) => {
         this.setState({
             print_type : e.target.value
         });
-
-        this.props.handelPrintType(this.state.print_type);
+        this.props.handelprinttype(this.state.print_type);
     }
 
 

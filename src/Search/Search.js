@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 
 export default class Search extends Component {
 
-    state = {
-        inputValue: ''
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            inputValue: ""
+        };
     }
 
 
@@ -11,7 +15,6 @@ export default class Search extends Component {
         this.setState({
             inputValue: evt.target.value
         });
-        console.log(this.state.inputValue);
     }
 
     render() {

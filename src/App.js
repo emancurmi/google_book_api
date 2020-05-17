@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Book from './Book/Book';
 import Search from './Search/Search';
+import Filter from './Filter/Filter';
 //https://www.googleapis.com/books/v1/volumes?q=armagedon&key=AIzaSyAIgIAeT1XBu-KOC6zFMQy1rP574-LciL8
 class App extends Component {
 
@@ -20,16 +21,13 @@ class App extends Component {
 
     fetchUsers() {
         if (this.state.query !== "") {
-            console.log("fetching");
             fetch(this.state.api + this.state.query + this.state.filter + this.state.printtype + this.state.key)
-                //fetch("https://www.googleapis.com/books/v1/volumes?q=armagedon&key=AIzaSyAIgIAeT1XBu-KOC6zFMQy1rP574-LciL8")    
                 .then(response => response.json())
                 .then(data =>
                     this.setState({
                         books: data.items,
                         isLoading: false,
                     }),
-                    console.log("finished fetching")
                 )
                 .catch(error => this.setState({ error, isLoading: false }));
         }
@@ -42,22 +40,20 @@ class App extends Component {
 
     handelquery = (newquery) => {
         this.setState({
-            query: '?q='+ newquery
+            query: "?q=" + newquery
         })
         this.fetchUsers();
-        console.log(newquery);
-        console.log(this.state.query);
     }
 
     handelfilter = (newfilter) => {
         this.setState({
-            filter: newfilter
+            filter: "&filter=" + newfilter
         })
     }
 
     handelprinttype = (newprintype) => {
         this.setState({
-            printtype: newprintype
+            printtype: "&printType=" + newprintype
         })
     }   
     
@@ -69,7 +65,8 @@ class App extends Component {
         return (
             <div className="App">
                 <h1>Google Book Search</h1>
-                <Search handelquery={this.handelquery}/>
+                <Search handelquery={this.handelquery} />
+                <Filter handelfilter={this.handelfilter} handelprinttype={this.handelprinttype} />
                 {book}
             </div>
         );
