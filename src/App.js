@@ -1,83 +1,76 @@
 import React, { Component } from 'react';
-import './App.css';
-import Header from './Header/Header';
-
-import SearchForm from './SearchForm/SearchForm';
 import Book from './Book/Book';
-
-
+import Search from './Search/Search';
+//https://www.googleapis.com/books/v1/volumes?q=armagedon&key=AIzaSyAIgIAeT1XBu-KOC6zFMQy1rP574-LciL8
 class App extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
-            API: "https://www.googleapis.com/books/v1/volumes",
-            API_KEY: "&key=AIzaSyAIgIAeT1XBu-KOC6zFMQy1rP574-LciL8",
-            data: [],
+            isLoading: true,
+            error: false,
+            api: "https://www.googleapis.com/books/v1/volumes",
             query: "",
-            searchkey: "q=",
-            search: "flowers+inauthor:keyes",
-            filterkey:"&filter=",
             filter: "",
-            printtypekey:"&printType=",
-            printtype:"",
-            isLoading: false,
+            printtype: "",
+            key: "&key=AIzaSyAIgIAeT1XBu-KOC6zFMQy1rP574-LciL8",
+            books: [],
         };
     }
 
-    componentDidMount() {
-        this.handelApiRequest();
-    }
-
-    handelSearchUpdate = (search) => {
-        this.setState({
-            search: search
-        });
-
-    }
-
-    handelFilter = (filter) => {
-        this.setState({
-            filter: filter
-        });
-
-    }
-
-    handelPrintType = (printtype) => {
-        this.setState({
-            printtype: printtype
-        });
-
-    }
-
-    querybuilder() {
-        let q = ""
-        if (this.state.search !== "") { q = this.state.searchkey + this.state.search }
-        if(this.state.filter !== "") { q += this.state.filterkey + this.state.filter }
-        if (this.state.printtype !== "") { q += this.state.printtypekey + this.state.printtype }
-        return q
-    }
-    
-    handelApiRequest = () => {
-
-
-        this.setState({
-            query: this.querybuilder
-        })
+    fetchUsers() {
         if (this.state.query !== "") {
-            fetch(this.state.API + this.state.query + this.state.API_KEY)
+            console.log("fetching");
+            fetch(this.state.api + this.state.query + this.state.filter + this.state.printtype + this.state.key)
+                //fetch("https://www.googleapis.com/books/v1/volumes?q=armagedon&key=AIzaSyAIgIAeT1XBu-KOC6zFMQy1rP574-LciL8")    
                 .then(response => response.json())
-                .then(data => this.setState({ data: data }));
+                .then(data =>
+                    this.setState({
+                        books: data.items,
+                        isLoading: false,
+                    }),
+                    console.log("finished fetching")
+                )
+                .catch(error => this.setState({ error, isLoading: false }));
         }
+        
     }
 
+    componentDidMount() {
+        this.fetchUsers();
+    }
+
+    handelquery = (newquery) => {
+        this.setState({
+            query: '?q='+ newquery
+        })
+        this.fetchUsers();
+        console.log(newquery);
+        console.log(this.state.query);
+    }
+
+    handelfilter = (newfilter) => {
+        this.setState({
+            filter: newfilter
+        })
+    }
+
+    handelprinttype = (newprintype) => {
+        this.setState({
+            printtype: newprintype
+        })
+    }   
+    
     render() {
+        const book = this.state.books
+            ? <Book books={this.state.books} />
+            : <div className="demonym_app__placeholder">No Books Found</div>;
+
         return (
             <div className="App">
-                <Header AppName="Google Books Search" />
-                <SearchForm handelSearchUpdate={this.handelSearchUpdate} handelFilter={this.props.handelFilter} handelPrintType={this.props.handelPrintType} />
-                <Book book={this.handelApiRequest}/>
+                <h1>Google Book Search</h1>
+                <Search handelquery={this.handelquery}/>
+                {book}
             </div>
         );
     }

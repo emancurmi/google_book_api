@@ -1,10 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class Book extends Component {
+export default function Books(props) {
 
-    render() {       
-        return (
-            <div></div>
-        )
-    }
+    const books = props.books;
+    const listBooks = books.map((book) =>
+        <div key={book.etag}>
+            <h2>{book.volumeInfo.title}</h2>
+            <p>Author: {book.volumeInfo.authors}</p>
+            <br />
+            <p>{book.volumeInfo.description}</p>
+        </div>
+    );
+
+    return (
+        <div>
+            {listBooks}
+        </div >
+    );
+
 }
